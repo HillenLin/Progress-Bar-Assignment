@@ -17,8 +17,9 @@ export class AppComponent implements OnInit {
   limit: number;
   httpGetEndPointService$: Subscription;
   selectedBar: any;
-  animatedBar: HTMLElement;
   widthArray: number[];
+
+  selectedIndexOfWidthArr: number;
 
 
   constructor(
@@ -31,17 +32,15 @@ export class AppComponent implements OnInit {
         this.endPoint = res;
         this.buttons = res.buttons;
         this.bars = res.bars;
-        this.widthArray = res.bars;
         this.limit = res.limit;
       },
       (error: any) => { console.error(error) },
       () =>{
         //codes should be executed after the completion of the API call
+        const myClonedArray  = Object.assign([], this.bars);
+        this.widthArray = myClonedArray;
       }
     );
-  }
-
-  ngAfterViewInit() {
   }
 
   ngOnDestroy(): void {
@@ -49,15 +48,14 @@ export class AppComponent implements OnInit {
     this.httpGetEndPointService$.unsubscribe();
   }
 
-  onChange(){
+  onChange(selectedBar:number){
+    //get the selected array inde to identify which element should be aniamted in the widthArray
+    //bug fix: inentical value in the array
+  }
 
-    console.log(this.bars);
-//get the selected array index, and assign a selected element
-    
-    }
-
-  aniamteProgressBar(selectedBar: number, buttonValue:number){
-
+  aniamteProgressBar(buttonValue:number){
+    this.widthArray[this.selectedBar] += buttonValue;
+    console.log(this.widthArray);
   }
 
 }
