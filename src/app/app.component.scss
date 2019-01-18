@@ -4,8 +4,13 @@
 .unseleted-bar-styles{
     opacity: 0.5;
 }
-
-
+.outter-wrapper{
+    background-color: #e9ecef;
+}
+.inner-wrapper{
+    height: 30px;
+    background-color: #28a745;
+}
 .buttons-wrapper{
     .row{
         position: absolute;

@@ -7,10 +7,13 @@
       <ng-container *ngFor="let bar of bars; let i = index">
         {{bar / limit | percent}}
         {{bar}}
-        <p id="progressbar-{{i + 1}}" [class.unseleted-bar-styles]="selectedBar !== bar">
-          <ngb-progressbar #progressbarSelected type="success" [value]="( bar / limit ) * 100" [striped]="true">
+        <!-- <p id="progressbar-{{i + 1}}" [class.unseleted-bar-styles]="selectedBar !== bar">
+          <ngb-progressbar type="success" [value]="( bar / limit ) * 100" [striped]="true">
           </ngb-progressbar>
-        </p>
+        </p> -->
+        <div id="progressbar-{{i + 1}}" class="outter-wrapper" [class.unseleted-bar-styles]="selectedBar !== bar">
+          <div class="inner-wrapper" [style.width.px]="widthArray[i]"></div>
+        </div>
       </ng-container>
     </div>
     <!-- END OF BARS -->
@@ -32,7 +35,7 @@
       <div class="row">
         <ng-container *ngFor="let button of buttons">
           <div class="col">
-            <button class="primary-button" (click)="aniamteProgressBar">{{button}}</button>
+            <button class="primary-button" (click)="aniamteProgressBar()">{{button}}</button>
           </div>
         </ng-container>
       </div>
