@@ -1,0 +1,45 @@
+<!-- USE SEMENTIC HTML -->
+
+<div class="container" *ngIf="endPoint">
+  <div class="row" >
+    <!-- BEGIN OF BARS -->
+    <div class="bars-wrapper col-md-12">
+      <ng-container *ngFor="let bar of bars; let i = index">
+        {{bar / limit | percent}}
+        {{bar}}
+        <p id="progressbar-{{i + 1}}" [class.unseleted-bar-styles]="selectedBar !== bar">
+          <ngb-progressbar #progressbarSelected type="success" [value]="( bar / limit ) * 100" [striped]="true">
+          </ngb-progressbar>
+        </p>
+      </ng-container>
+    </div>
+    <!-- END OF BARS -->
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <mat-form-field>
+        <mat-select placeholder="-- Please choose one of below progress bar --" [(ngModel)]="selectedBar" (ngModelChange)="onChange()">
+          <mat-option *ngFor="let bar of bars; let i = index" [value]="bar">
+            Progress Bar {{i + 1}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <!-- BEGIN OF BUTTONS -->
+    <div class="buttons-wrapper col-md-6">
+      <div class="row">
+        <ng-container *ngFor="let button of buttons">
+          <div class="col">
+            <button class="primary-button" (click)="aniamteProgressBar">{{button}}</button>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <!-- END OF BARS -->
+
+  </div>
+
+</div>
+
