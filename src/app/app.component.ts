@@ -10,25 +10,30 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent implements OnInit {
   title = 'progress-bar-assignment';
-
   endPoint: BarsModel;
   buttons: number[];
   bars: number[];
   limit: number;
   httpGetEndPointService$: Subscription;
-  selectedBar: any;
-  widthArray: number[];
-
-  selectedIndexOfWidthArr: number;
-
+  buttonAmont: number; //if the amount of buttons are greater than 4, relocated all buttons to a single line. 
+  widthArray: number[]; // used to change the width of the selected bar
+  colorArray: string[]; // used to change the color of the selected bar if the calculated width is greater than the limit
+  selectedBar: number; // the index of the current select element in the array of widthArray or colorArray. can be used to find the selected bar
 
   constructor(
     private httpService: HttpService,
     ) {}
 
   ngOnInit():void{
+    //receiving the endpoint data returned from API
     this.httpService.GetEndPoint().subscribe((res:BarsModel) =>{
-        console.log(res);
+
+      /*
+      //used to test if the amount of buttons are greater than 4.
+      // this.endPoint = {"buttons":[28,8,-28,-35, 33, 34],"bars":[56,23,23,23,50],"limit":140}
+      // res = this.endPoint;
+      */
+
         this.endPoint = res;
         this.buttons = res.buttons;
         this.bars = res.bars;
@@ -37,25 +42,36 @@ export class AppComponent implements OnInit {
       (error: any) => { console.error(error) },
       () =>{
         //codes should be executed after the completion of the API call
-        const myClonedArray  = Object.assign([], this.bars);
-        this.widthArray = myClonedArray;
+        this.selectedBar = 0;
+        this.buttonAmont = this.buttons.length;
+        const widthClonedArray = Object.assign([], this.bars);
+        this.widthArray = widthClonedArray;
+        this.colorArray = Array(this.widthArray.length).fill(null).map((u, i) => "#28a745")
       }
     );
   }
 
   ngOnDestroy(): void {
-    console.log('ngOnDestroy');
     this.httpGetEndPointService$.unsubscribe();
   }
 
-  onChange(selectedBar:number){
-    //get the selected array inde to identify which element should be aniamted in the widthArray
-    //bug fix: inentical value in the array
-  }
-
   aniamteProgressBar(buttonValue:number){
-    this.widthArray[this.selectedBar] += buttonValue;
-    console.log(this.widthArray);
-  }
+    if(this.selectedBar != null){
+      this.widthArray[this.selectedBar] += buttonValue;
 
+      if(this.widthArray[this.selectedBar] > this.limit){
+        //animate the selected bar to the danger color
+        this.colorArray[this.selectedBar] = "#dc3545";
+      }else{
+        this.colorArray[this.selectedBar] = "#28a745";
+      }
+  
+      if(this.widthArray[this.selectedBar] < 0){
+        //0 is the minimum value of width
+        this.widthArray[this.selectedBar] = 0;
+      }
+  
+    }
+  }
+  
 }

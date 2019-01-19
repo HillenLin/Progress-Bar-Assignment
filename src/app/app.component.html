@@ -1,18 +1,16 @@
 <!-- USE SEMENTIC HTML -->
-
 <div class="container" *ngIf="endPoint">
   <div class="row" >
+    <div class="col-md-12">
+      <p class="title">Progress Bars Demo</p>
+    </div>
     <!-- BEGIN OF BARS -->
     <div class="bars-wrapper col-md-12">
       <ng-container *ngFor="let bar of bars; let i = index">
-        {{widthArray[i] / limit | percent}}
-        {{widthArray[i]}}
-        <!-- <p id="progressbar-{{i + 1}}" [class.unseleted-bar-styles]="selectedBar !== bar">
-          <ngb-progressbar type="success" [value]="( bar / limit ) * 100" [striped]="true">
-          </ngb-progressbar>
-        </p> -->
         <div id="progressbar-{{i + 1}}" class="outter-wrapper" [class.unseleted-bar-styles]="selectedBar !== i">
-          <div class="inner-wrapper" [style.width.%]="(widthArray[i] * 100) / limit"></div>
+            <p>{{widthArray[i] / limit | percent}} ( {{widthArray[i]}} )</p>
+          <div class="inner-wrapper" [style.width.%]="(widthArray[i] * 100) / limit" [style.background-color]="colorArray[i]">
+          </div>
         </div>
       </ng-container>
     </div>
@@ -20,22 +18,27 @@
   </div>
 
   <div class="row">
-    <div class="col-md-6">
+    <!-- BEGIN OF SELECTION BOX -->
+    <div [className]="buttonAmont > 4 ? 'col-md-4' : 'col-md-6' ">
       <mat-form-field>
-        <mat-select placeholder="-- Please choose one of below progress bar --" [(ngModel)]="selectedBar" (ngModelChange)="onChange(selectedBar)">
+        <mat-select [(ngModel)]="selectedBar">
           <mat-option *ngFor="let bar of bars; let i = index" [value]="i">
             Progress Bar {{i + 1}}
           </mat-option>
         </mat-select>
       </mat-form-field>
     </div>
+    <!-- END OF SELECTION BOX -->
 
     <!-- BEGIN OF BUTTONS -->
-    <div class="buttons-wrapper col-md-6">
+    <div [className]="buttonAmont > 4 ? 'col-md-8 buttons-wrapper' : 'col-md-6 buttons-wrapper' ">
       <div class="row">
         <ng-container *ngFor="let button of buttons">
           <div class="col">
-            <button class="primary-button" (click)="aniamteProgressBar(button)">{{button}}</button>
+            <button class="primary-button" (click)="aniamteProgressBar(button)">
+              <span *ngIf="button > 0">+</span>
+              <span>{{button}}</span>
+            </button>
           </div>
         </ng-container>
       </div>
@@ -43,6 +46,5 @@
     <!-- END OF BARS -->
 
   </div>
-
 </div>
 
